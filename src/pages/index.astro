@@ -1,9 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import Carousel from '../components/Carousel.astro';
 import Countdown from '../components/Countdown.astro';
 import Details from '../components/Details.astro';
 import Map from '../components/Map.astro';
+import RsvpForm from '../components/RsvpForm.astro';
 import Footer from '../components/Footer.astro';
 
 // ─────────────────────────────────────────────
@@ -14,6 +16,16 @@ const config = {
   // Hero
   childName: "Levi's",
   tagline: "Come celebrate this amazing milestone with us!",
+  heroImage: "/images/levi-hero.jpg",
+
+  // Carousel — add/remove images here
+  carouselImages: [
+    { src: "/images/carousel-1.jpg", alt: "Levi smiling" },
+    { src: "/images/carousel-2.jpg", alt: "Levi playing" },
+    { src: "/images/carousel-3.jpg", alt: "Levi with family" },
+    { src: "/images/carousel-4.jpg", alt: "Levi's first steps" },
+    { src: "/images/carousel-5.jpg", alt: "Levi laughing" },
+  ],
 
   // Countdown — set to your party date/time in ISO format
   partyDate: "2026-04-25T13:00:00",
@@ -24,12 +36,13 @@ const config = {
   time: "1:00 PM",
   venue: "Faylane Park",
   address: "11700 Seacrest Dr, Garden Grove, CA 92840",
-  dressCode: "Colorful & casual — the more fun, the better!",
-  rsvpEmail: "family@example.com",
 
-  // Map — set latitude and longitude of your venue
+  // Map — latitude and longitude of your venue
   lat: 33.7930715,
   lng: -117.9542262,
+
+  // RSVP — get your free form ID at https://formspree.io
+  formspreeId: "YOUR_FORMSPREE_ID",
 
   // Footer
   familyName: "The Family",
@@ -37,15 +50,18 @@ const config = {
 ---
 
 <Layout title={`${config.childName} 1st Birthday Party`}>
-  <Hero childName={config.childName} tagline={config.tagline} />
+  <Hero
+    childName={config.childName}
+    tagline={config.tagline}
+    heroImage={config.heroImage}
+  />
+  <Carousel images={config.carouselImages} />
   <Countdown partyDate={config.partyDate} timezone={config.timezone} />
   <Details
     date={config.date}
     time={config.time}
     venue={config.venue}
     address={config.address}
-    dressCode={config.dressCode}
-    rsvpEmail={config.rsvpEmail}
   />
   <Map
     lat={config.lat}
@@ -53,5 +69,6 @@ const config = {
     venueName={config.venue}
     address={config.address}
   />
+  <RsvpForm formspreeId={config.formspreeId} />
   <Footer familyName={config.familyName} />
 </Layout>

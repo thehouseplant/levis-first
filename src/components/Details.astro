@@ -4,8 +4,6 @@ interface Props {
   time?: string;
   venue?: string;
   address?: string;
-  dressCode?: string;
-  rsvpEmail?: string;
 }
 
 const {
@@ -13,8 +11,6 @@ const {
   time = "1:00 PM",
   venue = "Faylane Park",
   address = "11700 Seacrest Dr, Garden Grove, CA 92840",
-  dressCode = "Colorful & casual — the more fun, the better!",
-  rsvpEmail = "family@example.com",
 } = Astro.props;
 ---
 
@@ -48,31 +44,6 @@ const {
         <p class="card-value">{venue}</p>
         <p class="card-sub">{address}</p>
       </div>
-
-      <div class="detail-card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="5" />
-            <path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2" />
-          </svg>
-        </div>
-        <h3 class="card-label">Dress Code</h3>
-        <p class="card-value">{dressCode}</p>
-      </div>
-
-      <div class="detail-card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-            <polyline points="22,6 12,13 2,6" />
-          </svg>
-        </div>
-        <h3 class="card-label">RSVP</h3>
-        <p class="card-value">Let us know you're coming!</p>
-        <a href={`mailto:${rsvpEmail}?subject=Birthday RSVP`} class="rsvp-link">
-          {rsvpEmail}
-        </a>
-      </div>
     </div>
   </div>
 </section>
@@ -81,11 +52,10 @@ const {
   .details-section {
     padding: 5rem 1.5rem;
     background: var(--cream);
-    position: relative;
   }
 
   .details-wrapper {
-    max-width: 800px;
+    max-width: 650px;
     margin: 0 auto;
   }
 
@@ -99,7 +69,7 @@ const {
 
   .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
   }
 
@@ -119,9 +89,7 @@ const {
     border-color: var(--blue);
   }
 
-  .card-icon {
-    margin-bottom: 1rem;
-  }
+  .card-icon { margin-bottom: 1rem; }
 
   .card-label {
     font-family: var(--font-display);
@@ -145,18 +113,5 @@ const {
     color: var(--navy);
     opacity: 0.6;
     margin-top: 0.25rem;
-  }
-
-  .rsvp-link {
-    display: inline-block;
-    margin-top: 0.5rem;
-    font-weight: 600;
-    color: var(--blue);
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s;
-  }
-
-  .rsvp-link:hover {
-    border-bottom-color: var(--blue);
   }
 </style>
