@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Countdown from '../components/Countdown.astro';
+import Details from '../components/Details.astro';
+import Map from '../components/Map.astro';
+import Footer from '../components/Footer.astro';
+
+// ─────────────────────────────────────────────
+// ✏️ EDIT THESE VALUES TO CUSTOMIZE YOUR PARTY
+// ─────────────────────────────────────────────
+
+const config = {
+  // Hero
+  childName: "Levi's",
+  tagline: "Come celebrate this amazing milestone with us!",
+
+  // Countdown — set to your party date/time in ISO format
+  partyDate: "2026-04-25T13:00:00",
+  timezone: "America/Los_Angeles",
+
+  // Details
+  date: "Saturday, April 25, 2026",
+  time: "1:00 PM",
+  venue: "Faylane Park",
+  address: "11700 Seacrest Dr, Garden Grove, CA 92840",
+  dressCode: "Colorful & casual — the more fun, the better!",
+  rsvpEmail: "family@example.com",
+
+  // Map — set latitude and longitude of your venue
+  lat: 33.7930715,
+  lng: -117.9542262,
+
+  // Footer
+  familyName: "The Family",
+};
+---
+
+<Layout title={`${config.childName} 1st Birthday Party`}>
+  <Hero childName={config.childName} tagline={config.tagline} />
+  <Countdown partyDate={config.partyDate} timezone={config.timezone} />
+  <Details
+    date={config.date}
+    time={config.time}
+    venue={config.venue}
+    address={config.address}
+    dressCode={config.dressCode}
+    rsvpEmail={config.rsvpEmail}
+  />
+  <Map
+    lat={config.lat}
+    lng={config.lng}
+    venueName={config.venue}
+    address={config.address}
+  />
+  <Footer familyName={config.familyName} />
+</Layout>

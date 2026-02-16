@@ -1,0 +1,212 @@
+---
+interface Props {
+  partyDate: string;
+  timezone?: string;
+}
+
+const { partyDate, timezone = "America/Los_Angeles" } = Astro.props;
+---
+
+<section class="countdown-section" id="countdown">
+  <div class="section-wrapper">
+    <div class="paw-divider" aria-hidden="true">
+      <svg viewBox="0 0 60 60" width="28" fill="var(--blue)">
+        <ellipse cx="30" cy="38" rx="14" ry="16" />
+        <ellipse cx="16" cy="20" rx="7" ry="8" />
+        <ellipse cx="44" cy="20" rx="7" ry="8" />
+        <ellipse cx="22" cy="10" rx="6" ry="7" />
+        <ellipse cx="38" cy="10" rx="6" ry="7" />
+      </svg>
+    </div>
+    <h2 class="section-title">Counting Down!</h2>
+    <p class="section-subtitle">The big day is almost here</p>
+
+    <div
+      class="countdown-container"
+      data-party-date={partyDate}
+      data-timezone={timezone}
+    >
+      <div class="countdown-ring">
+        <div class="ring-unit">
+          <span class="ring-number" id="cd-days">--</span>
+          <span class="ring-label">Days</span>
+        </div>
+      </div>
+      <div class="countdown-ring">
+        <div class="ring-unit">
+          <span class="ring-number" id="cd-hours">--</span>
+          <span class="ring-label">Hours</span>
+        </div>
+      </div>
+      <div class="countdown-ring">
+        <div class="ring-unit">
+          <span class="ring-number" id="cd-minutes">--</span>
+          <span class="ring-label">Minutes</span>
+        </div>
+      </div>
+      <div class="countdown-ring">
+        <div class="ring-unit">
+          <span class="ring-number" id="cd-seconds">--</span>
+          <span class="ring-label">Seconds</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="countdown-message" id="cd-message"></p>
+  </div>
+</section>
+
+<script>
+  function initCountdown() {
+    const container = document.querySelector('.countdown-container');
+    if (!container) return;
+
+    const partyDate = new Date(container.getAttribute('data-party-date')!);
+    const daysEl = document.getElementById('cd-days')!;
+    const hoursEl = document.getElementById('cd-hours')!;
+    const minsEl = document.getElementById('cd-minutes')!;
+    const secsEl = document.getElementById('cd-seconds')!;
+    const msgEl = document.getElementById('cd-message')!;
+
+    function update() {
+      const now = new Date();
+      const diff = partyDate.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        daysEl.textContent = '0';
+        hoursEl.textContent = '0';
+        minsEl.textContent = '0';
+        secsEl.textContent = '0';
+        msgEl.textContent = "🎉 It's party time! 🎉";
+        msgEl.classList.add('party-time');
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      daysEl.textContent = String(days);
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minsEl.textContent = String(minutes).padStart(2, '0');
+      secsEl.textContent = String(seconds).padStart(2, '0');
+
+      requestAnimationFrame(() => setTimeout(update, 1000));
+    }
+
+    update();
+  }
+
+  initCountdown();
+</script>
+
+<style>
+  .countdown-section {
+    padding: 5rem 1.5rem;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(42, 127, 255, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 50%, rgba(78, 194, 78, 0.04) 0%, transparent 60%),
+      var(--soft-white);
+  }
+
+  .section-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .paw-divider {
+    margin-bottom: 1rem;
+    opacity: 0.6;
+    filter: drop-shadow(0 2px 4px rgba(42, 127, 255, 0.15));
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+
+  .section-subtitle {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    color: var(--navy);
+    opacity: 0.6;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+  }
+
+  .countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+    flex-wrap: wrap;
+  }
+
+  .countdown-ring {
+    width: clamp(80px, 18vw, 130px);
+    height: clamp(80px, 18vw, 130px);
+    border-radius: 50%;
+    background: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 4px 20px rgba(42, 127, 255, 0.1),
+      0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .countdown-ring::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--green), var(--blue));
+    z-index: -1;
+  }
+
+  .ring-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .ring-number {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--blue-dark);
+    line-height: 1;
+  }
+
+  .ring-label {
+    font-family: var(--font-body);
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--green-dark);
+  }
+
+  .countdown-message {
+    margin-top: 2rem;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--blue);
+    min-height: 2rem;
+  }
+
+  .countdown-message.party-time {
+    font-size: 1.8rem;
+    animation: pulse 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+  }
+</style>
