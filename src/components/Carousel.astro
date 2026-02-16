@@ -1,0 +1,257 @@
+---
+interface Props {
+  /** Array of image objects with src and alt text */
+  images?: { src: string; alt: string }[];
+}
+
+const { images = [
+  { src: "/images/carousel-1.jpg", alt: "Levi photo 1" },
+  { src: "/images/carousel-2.jpg", alt: "Levi photo 2" },
+  { src: "/images/carousel-3.jpg", alt: "Levi photo 3" },
+  { src: "/images/carousel-4.jpg", alt: "Levi photo 4" },
+  { src: "/images/carousel-5.jpg", alt: "Levi photo 5" },
+] } = Astro.props;
+---
+
+<section class="carousel-section" id="photos">
+  <div class="carousel-wrapper">
+    <h2 class="section-title">Our Little Star</h2>
+    <p class="section-subtitle">Some favorite moments from Levi's first year</p>
+
+    <div class="carousel-viewport">
+      <button class="carousel-btn carousel-btn-prev" aria-label="Previous photo" id="carousel-prev">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+
+      <div class="carousel-track" id="carousel-track">
+        {images.map((img, i) => (
+          <div class="carousel-slide" data-index={i}>
+            <img src={img.src} alt={img.alt} loading={i === 0 ? "eager" : "lazy"} />
+          </div>
+        ))}
+      </div>
+
+      <button class="carousel-btn carousel-btn-next" aria-label="Next photo" id="carousel-next">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="carousel-dots" id="carousel-dots">
+      {images.map((_, i) => (
+        <button
+          class={`dot ${i === 0 ? 'active' : ''}`}
+          aria-label={`Go to photo ${i + 1}`}
+          data-index={i}
+        >
+          <svg viewBox="0 0 60 60" width="16" fill="currentColor">
+            <ellipse cx="30" cy="38" rx="14" ry="16" />
+            <ellipse cx="16" cy="20" rx="7" ry="8" />
+            <ellipse cx="44" cy="20" rx="7" ry="8" />
+            <ellipse cx="22" cy="10" rx="6" ry="7" />
+            <ellipse cx="38" cy="10" rx="6" ry="7" />
+          </svg>
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCarousel() {
+    const track = document.getElementById('carousel-track') as HTMLElement;
+    const prevBtn = document.getElementById('carousel-prev') as HTMLElement;
+    const nextBtn = document.getElementById('carousel-next') as HTMLElement;
+    const dotsContainer = document.getElementById('carousel-dots') as HTMLElement;
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+
+    const slides = track.querySelectorAll('.carousel-slide');
+    const dots = dotsContainer.querySelectorAll('.dot');
+    const total = slides.length;
+    let current = 0;
+
+    function goTo(index: number) {
+      current = ((index % total) + total) % total;
+      const slide = slides[current] as HTMLElement;
+      track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = Number((dot as HTMLElement).dataset.index);
+        goTo(idx);
+      });
+    });
+
+    // Sync dots on manual scroll / snap
+    let scrollTimer: number;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        const trackLeft = track.scrollLeft;
+        let closest = 0;
+        let minDist = Infinity;
+        slides.forEach((slide, i) => {
+          const dist = Math.abs((slide as HTMLElement).offsetLeft - track.offsetLeft - trackLeft);
+          if (dist < minDist) { minDist = dist; closest = i; }
+        });
+        if (closest !== current) {
+          current = closest;
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        }
+      }, 80);
+    });
+
+    // Keyboard navigation
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+  }
+
+  initCarousel();
+</script>
+
+<style>
+  .carousel-section {
+    padding: 5rem 1.5rem;
+    background:
+      radial-gradient(ellipse at 40% 30%, rgba(42, 127, 255, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse at 60% 70%, rgba(78, 194, 78, 0.04) 0%, transparent 60%),
+      var(--cream);
+  }
+
+  .carousel-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+
+  .section-subtitle {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    color: var(--navy);
+    opacity: 0.6;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+  .carousel-viewport {
+    position: relative;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 20px;
+    padding: 0.25rem 0;
+    scrollbar-width: none;
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+    background: var(--blue-light);
+    box-shadow:
+      0 4px 20px rgba(42, 127, 255, 0.1),
+      0 1px 4px rgba(0, 0, 0, 0.04);
+    border: 2px solid var(--blue-light);
+  }
+
+  /* Arrow buttons */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: var(--blue);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 4px 15px rgba(42, 127, 255, 0.3);
+  }
+
+  .carousel-btn-prev { left: -16px; }
+  .carousel-btn-next { right: -16px; }
+
+  /* Paw print dots */
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .dot {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #c8ddf5;
+    transition: all 0.25s ease;
+    transform: scale(1);
+  }
+
+  .dot:hover {
+    color: var(--blue);
+    transform: scale(1.15);
+  }
+
+  .dot.active {
+    color: var(--blue);
+    transform: scale(1.2);
+    filter: drop-shadow(0 2px 4px rgba(42, 127, 255, 0.3));
+  }
+
+  @media (max-width: 600px) {
+    .carousel-btn {
+      width: 36px;
+      height: 36px;
+    }
+    .carousel-btn-prev { left: -6px; }
+    .carousel-btn-next { right: -6px; }
+    .carousel-btn svg { width: 20px; height: 20px; }
+  }
+</style>
