@@ -156,10 +156,33 @@
     transform: scale(1) translateY(0);
   }
 
-  /* Hide on very small screens to avoid obstructing content */
   @media (max-width: 420px) {
     .blue-pup-container {
-      display: none;
+      bottom: -10px;
+      right: -20px;
+    }
+
+    .blue-pup-container.entered {
+      transform: translateX(12px);
+    }
+
+    .blue-pup-container.peek-more {
+      transform: translateX(4px);
+    }
+
+    .pup-img {
+      width: 60px;
+    }
+
+    .thought-bubble {
+      width: 36px;
+      height: 36px;
+      top: -8px;
+      left: -14px;
+    }
+
+    .thought-bubble svg {
+      width: 16px;
     }
   }
 
