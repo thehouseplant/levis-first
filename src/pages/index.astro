@@ -5,8 +5,9 @@ import Carousel from '../components/Carousel.astro';
 import Countdown from '../components/Countdown.astro';
 import Details from '../components/Details.astro';
 import Map from '../components/Map.astro';
-import RsvpForm from '../components/RsvpForm.astro';
+import RsvpLink from '../components/RsvpLink.astro';
 import Footer from '../components/Footer.astro';
+import BluePup from '../components/BluePup.astro';
 
 // ─────────────────────────────────────────────
 // ✏️ EDIT THESE VALUES TO CUSTOMIZE YOUR PARTY
@@ -37,12 +38,22 @@ const config = {
   venue: "Faylane Park",
   address: "11700 Seacrest Dr, Garden Grove, CA 92840",
 
+  // Wish list — items guests might bring (shown as pill tags)
+  wishListItems: [
+    "Books for little readers",
+    "Outdoor toys & bubbles",
+    "Building blocks & stacking toys",
+    "Gift cards",
+  ],
+  // Optional: link to a full registry or wish list page
+  // wishListUrl: "https://www.amazon.com/registry/...",
+
   // Map — latitude and longitude of your venue
   lat: 33.7930715,
   lng: -117.9542262,
 
-  // RSVP — get your free form ID at https://formspree.io
-  formspreeId: "YOUR_FORMSPREE_ID",
+  // RSVP — your evite URL
+  eviteUrl: "https://www.evite.com/your-invite-link",
 
   // Footer
   familyName: "The Family",
@@ -62,6 +73,7 @@ const config = {
     time={config.time}
     venue={config.venue}
     address={config.address}
+    wishListItems={config.wishListItems}
   />
   <Map
     lat={config.lat}
@@ -69,6 +81,7 @@ const config = {
     venueName={config.venue}
     address={config.address}
   />
-  <RsvpForm formspreeId={config.formspreeId} />
+  <RsvpLink eviteUrl={config.eviteUrl} />
   <Footer familyName={config.familyName} />
+  <BluePup />
 </Layout>

@@ -4,6 +4,8 @@ interface Props {
   time?: string;
   venue?: string;
   address?: string;
+  wishListUrl?: string;
+  wishListItems?: string[];
 }
 
 const {
@@ -11,6 +13,13 @@ const {
   time = "1:00 PM",
   venue = "Faylane Park",
   address = "11700 Seacrest Dr, Garden Grove, CA 92840",
+  wishListUrl = "",
+  wishListItems = [
+    "Books for little readers",
+    "Outdoor toys & bubbles",
+    "Building blocks & stacking toys",
+    "Gift cards",
+  ],
 } = Astro.props;
 ---
 
@@ -44,6 +53,45 @@ const {
         <p class="card-value">{venue}</p>
         <p class="card-sub">{address}</p>
       </div>
+
+      <div class="detail-card wish-card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="8" width="18" height="13" rx="2" />
+            <path d="M12 8V3" />
+            <path d="M3 13h18" />
+            <path d="M7.5 3C6 3 5 4 5 5.5S6 8 7.5 8H12" />
+            <path d="M16.5 3C18 3 19 4 19 5.5S18 8 16.5 8H12" />
+          </svg>
+        </div>
+        <h3 class="card-label">Wish List</h3>
+        <p class="card-value wish-intro">If you'd like to bring a gift, here are some ideas Levi would love:</p>
+        <ul class="wish-list">
+          {wishListItems.map((item) => (
+            <li class="wish-item">
+              <svg viewBox="0 0 60 60" width="12" fill="var(--blue)" class="wish-paw" aria-hidden="true">
+                <ellipse cx="30" cy="38" rx="14" ry="16" />
+                <ellipse cx="16" cy="20" rx="7" ry="8" />
+                <ellipse cx="44" cy="20" rx="7" ry="8" />
+                <ellipse cx="22" cy="10" rx="6" ry="7" />
+                <ellipse cx="38" cy="10" rx="6" ry="7" />
+              </svg>
+              {item}
+            </li>
+          ))}
+        </ul>
+        {wishListUrl && (
+          <a href={wishListUrl} target="_blank" rel="noopener noreferrer" class="wish-link">
+            View Full Wish List
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
+        )}
+        <p class="wish-note">Your presence is the best gift of all!</p>
+      </div>
     </div>
   </div>
 </section>
@@ -55,7 +103,7 @@ const {
   }
 
   .details-wrapper {
-    max-width: 650px;
+    max-width: 750px;
     margin: 0 auto;
   }
 
@@ -69,7 +117,7 @@ const {
 
   .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
 
@@ -87,6 +135,10 @@ const {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(42, 127, 255, 0.12);
     border-color: var(--blue);
+  }
+
+  .wish-card {
+    grid-column: 1 / -1;
   }
 
   .card-icon { margin-bottom: 1rem; }
@@ -113,5 +165,69 @@ const {
     color: var(--navy);
     opacity: 0.6;
     margin-top: 0.25rem;
+  }
+
+  /* Wish list styles */
+  .wish-intro {
+    margin-bottom: 1rem;
+    opacity: 0.75;
+  }
+
+  .wish-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 1.5rem;
+    margin-bottom: 1.25rem;
+    padding: 0;
+  }
+
+  .wish-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--navy);
+    background: var(--blue-light);
+    padding: 0.45rem 1rem 0.45rem 0.75rem;
+    border-radius: 50px;
+  }
+
+  .wish-paw {
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  .wish-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--blue);
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+    margin-bottom: 1rem;
+  }
+
+  .wish-link:hover {
+    border-bottom-color: var(--blue);
+  }
+
+  .wish-note {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--navy);
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  @media (max-width: 580px) {
+    .details-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

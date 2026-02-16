@@ -1,308 +1,277 @@
 ---
 interface Props {
-    childName?: string;
-    tagline?: string;
-    /** Path to the hero photo — place your image in /public/images/ */
-    heroImage?: string;
+  childName?: string;
+  tagline?: string;
+  /** Path to the hero photo — place your image in /public/images/ */
+  heroImage?: string;
 }
 
 const {
-    childName = "Levi's",
-    tagline = "Come celebrate this amazing milestone with us!",
-    heroImage = "/images/levi-hero.jpg",
+  childName = "Levi's",
+  tagline = "Come celebrate this amazing milestone with us!",
+  heroImage = "/images/levi-hero.jpg",
 } = Astro.props;
 ---
 
 <section class="hero">
-    <!-- Paw print background pattern -->
-    <div class="paw-layer" aria-hidden="true">
-        {
-            Array.from({ length: 14 }).map((_, i) => (
-                <div
-                    class="paw"
-                    style={`--x: ${8 + ((i * 7) % 90)}%; --y: ${5 + ((i * 13) % 85)}%; --rot: ${-30 + ((i * 47) % 60)}deg; --delay: ${i * 0.3}s; --size: ${0.6 + (i % 4) * 0.2}`}
-                >
-                    <svg viewBox="0 0 60 60" width="48" fill="var(--blue)">
-                        <ellipse
-                            cx="30"
-                            cy="38"
-                            rx="14"
-                            ry="16"
-                            opacity="0.12"
-                        />
-                        <ellipse cx="16" cy="20" rx="7" ry="8" opacity="0.12" />
-                        <ellipse cx="44" cy="20" rx="7" ry="8" opacity="0.12" />
-                        <ellipse cx="22" cy="10" rx="6" ry="7" opacity="0.12" />
-                        <ellipse cx="38" cy="10" rx="6" ry="7" opacity="0.12" />
-                    </svg>
-                </div>
-            ))
-        }
+  <!-- Paw print background pattern -->
+  <div class="paw-layer" aria-hidden="true">
+    {Array.from({ length: 14 }).map((_, i) => (
+      <div class="paw" style={`--x: ${8 + (i * 7) % 90}%; --y: ${5 + (i * 13) % 85}%; --rot: ${-30 + (i * 47) % 60}deg; --delay: ${i * 0.3}s; --size: ${0.6 + (i % 4) * 0.2}`}>
+        <svg viewBox="0 0 60 60" width="48" fill="var(--blue)">
+          <ellipse cx="30" cy="38" rx="14" ry="16" opacity="0.12" />
+          <ellipse cx="16" cy="20" rx="7" ry="8" opacity="0.12" />
+          <ellipse cx="44" cy="20" rx="7" ry="8" opacity="0.12" />
+          <ellipse cx="22" cy="10" rx="6" ry="7" opacity="0.12" />
+          <ellipse cx="38" cy="10" rx="6" ry="7" opacity="0.12" />
+        </svg>
+      </div>
+    ))}
+  </div>
+
+  <div class="hero-content">
+    <div class="clue-badge" aria-hidden="true">
+      <img src="/images/clue-badge.png" alt="" width="100" height="100" class="clue-badge-img" />
     </div>
 
-    <div class="hero-content">
-        <div class="clue-badge" aria-hidden="true">
-            <svg viewBox="0 0 60 60" width="44" fill="var(--blue)">
-                <ellipse cx="30" cy="38" rx="14" ry="16"></ellipse>
-                <ellipse cx="16" cy="20" rx="7" ry="8"></ellipse>
-                <ellipse cx="44" cy="20" rx="7" ry="8"></ellipse>
-                <ellipse cx="22" cy="10" rx="6" ry="7"></ellipse>
-                <ellipse cx="38" cy="10" rx="6" ry="7"></ellipse>
-            </svg>
-        </div>
+    <p class="pre-title">You're Invited to</p>
+    <h1 class="title">
+      <span class="name">{childName}</span>
+      <span class="occasion">1<sup>st</sup> Birthday!</span>
+    </h1>
+    <p class="tagline">{tagline}</p>
 
-        <p class="pre-title">You're Invited to</p>
-        <h1 class="title">
-            <span class="name">{childName}</span>
-            <span class="occasion">1<sup>st</sup> Birthday!</span>
-        </h1>
-        <p class="tagline">{tagline}</p>
-
-        <!-- Hero Photo -->
-        <div class="photo-frame">
-            <div class="photo-border">
-                <img
-                    src={heroImage}
-                    alt={`${childName} birthday photo`}
-                    class="hero-photo"
-                    width="280"
-                    height="280"
-                    loading="eager"
-                />
-            </div>
-            <!-- Corner paw prints on the frame -->
-            <div class="frame-paw frame-paw-tl" aria-hidden="true">
-                <svg viewBox="0 0 60 60" width="24" fill="var(--blue)">
-                    <ellipse cx="30" cy="38" rx="14" ry="16"></ellipse>
-                    <ellipse cx="16" cy="20" rx="7" ry="8"></ellipse>
-                    <ellipse cx="44" cy="20" rx="7" ry="8"></ellipse>
-                    <ellipse cx="22" cy="10" rx="6" ry="7"></ellipse>
-                    <ellipse cx="38" cy="10" rx="6" ry="7"></ellipse>
-                </svg>
-            </div>
-            <div class="frame-paw frame-paw-br" aria-hidden="true">
-                <svg viewBox="0 0 60 60" width="24" fill="var(--green)">
-                    <ellipse cx="30" cy="38" rx="14" ry="16"></ellipse>
-                    <ellipse cx="16" cy="20" rx="7" ry="8"></ellipse>
-                    <ellipse cx="44" cy="20" rx="7" ry="8"></ellipse>
-                    <ellipse cx="22" cy="10" rx="6" ry="7"></ellipse>
-                    <ellipse cx="38" cy="10" rx="6" ry="7"></ellipse>
-                </svg>
-            </div>
-        </div>
+    <!-- Hero Photo -->
+    <div class="photo-frame">
+      <div class="photo-border">
+        <img
+          src={heroImage}
+          alt={`${childName} birthday photo`}
+          class="hero-photo"
+          width="280"
+          height="280"
+          loading="eager"
+        />
+      </div>
+      <!-- Corner paw prints on the frame -->
+      <div class="frame-paw frame-paw-tl" aria-hidden="true">
+        <svg viewBox="0 0 60 60" width="24" fill="var(--blue)">
+          <ellipse cx="30" cy="38" rx="14" ry="16" />
+          <ellipse cx="16" cy="20" rx="7" ry="8" />
+          <ellipse cx="44" cy="20" rx="7" ry="8" />
+          <ellipse cx="22" cy="10" rx="6" ry="7" />
+          <ellipse cx="38" cy="10" rx="6" ry="7" />
+        </svg>
+      </div>
+      <div class="frame-paw frame-paw-br" aria-hidden="true">
+        <svg viewBox="0 0 60 60" width="24" fill="var(--green)">
+          <ellipse cx="30" cy="38" rx="14" ry="16" />
+          <ellipse cx="16" cy="20" rx="7" ry="8" />
+          <ellipse cx="44" cy="20" rx="7" ry="8" />
+          <ellipse cx="22" cy="10" rx="6" ry="7" />
+          <ellipse cx="38" cy="10" rx="6" ry="7" />
+        </svg>
+      </div>
     </div>
+
+    <a href="#details" class="cta-button">
+      <svg viewBox="0 0 60 60" width="20" fill="white" style="flex-shrink:0">
+        <ellipse cx="30" cy="38" rx="14" ry="16" />
+        <ellipse cx="16" cy="20" rx="7" ry="8" />
+        <ellipse cx="44" cy="20" rx="7" ry="8" />
+        <ellipse cx="22" cy="10" rx="6" ry="7" />
+        <ellipse cx="38" cy="10" rx="6" ry="7" />
+      </svg>
+      Party Details
+    </a>
+  </div>
 </section>
 
 <style>
-    .hero {
-        position: relative;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        overflow: hidden;
-        background:
-            radial-gradient(
-                ellipse at 30% 20%,
-                rgba(42, 127, 255, 0.08) 0%,
-                transparent 50%
-            ),
-            radial-gradient(
-                ellipse at 70% 80%,
-                rgba(78, 194, 78, 0.06) 0%,
-                transparent 50%
-            ),
-            radial-gradient(
-                ellipse at 50% 50%,
-                rgba(42, 127, 255, 0.03) 0%,
-                transparent 70%
-            ),
-            var(--cream);
-    }
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(42, 127, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(78, 194, 78, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(42, 127, 255, 0.03) 0%, transparent 70%),
+      var(--cream);
+  }
 
-    .paw-layer {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-    }
+  .paw-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    .paw {
-        position: absolute;
-        left: var(--x);
-        top: var(--y);
-        transform: rotate(var(--rot)) scale(var(--size));
-        animation: paw-fade 8s var(--delay) ease-in-out infinite alternate;
-    }
+  .paw {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: rotate(var(--rot)) scale(var(--size));
+    animation: paw-fade 8s var(--delay) ease-in-out infinite alternate;
+  }
 
-    @keyframes paw-fade {
-        0%,
-        100% {
-            opacity: 0.5;
-        }
-        50% {
-            opacity: 1;
-        }
-    }
+  @keyframes paw-fade {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
 
-    .hero-content {
-        position: relative;
-        z-index: 2;
-        padding: 2rem;
-        animation: fade-up 0.8s ease-out;
-    }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    animation: fade-up 0.8s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    @keyframes fade-up {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-    .clue-badge {
-        animation: fade-up 0.8s 0.1s ease-out both;
-        margin-bottom: 0.5rem;
-        filter: drop-shadow(0 3px 8px rgba(42, 127, 255, 0.25));
-    }
+  .clue-badge {
+    animation: fade-up 0.8s 0.1s ease-out both;
+    margin-bottom: 0.75rem;
+  }
 
-    .pre-title {
-        font-family: var(--font-body);
-        font-size: clamp(1rem, 3vw, 1.3rem);
-        font-weight: 600;
-        color: var(--green-dark);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        margin-bottom: 0.4rem;
-        animation: fade-up 0.8s 0.15s ease-out both;
-    }
+  .clue-badge-img {
+    width: clamp(80px, 18vw, 110px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(42, 127, 255, 0.2));
+  }
 
-    .title {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-        line-height: 1.1;
-    }
+  .pre-title {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    font-weight: 600;
+    color: var(--green-dark);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    animation: fade-up 0.8s 0.15s ease-out both;
+  }
 
-    .name {
-        font-size: clamp(2.5rem, 8vw, 5rem);
-        font-weight: 800;
-        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: fade-up 0.8s 0.2s ease-out both;
-    }
+  .title {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    line-height: 1.1;
+  }
 
-    .occasion {
-        font-size: clamp(2rem, 6vw, 3.5rem);
-        font-weight: 700;
-        color: var(--navy);
-        animation: fade-up 0.8s 0.3s ease-out both;
-    }
+  .name {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fade-up 0.8s 0.2s ease-out both;
+  }
 
-    .occasion sup {
-        font-size: 0.5em;
-    }
+  .occasion {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    color: var(--navy);
+    animation: fade-up 0.8s 0.3s ease-out both;
+  }
 
-    .tagline {
-        font-size: clamp(1rem, 2.5vw, 1.2rem);
-        font-weight: 400;
-        color: var(--navy);
-        opacity: 0.65;
-        max-width: 400px;
-        margin: 0.8rem auto 1.5rem;
-        line-height: 1.6;
-        animation: fade-up 0.8s 0.35s ease-out both;
-    }
+  .occasion sup { font-size: 0.5em; }
 
-    /* Photo frame */
-    .photo-frame {
-        position: relative;
-        display: inline-block;
-        margin: 0 auto 2rem;
-        animation: fade-up 0.8s 0.4s ease-out both;
-    }
+  .tagline {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: 400;
+    color: var(--navy);
+    opacity: 0.65;
+    max-width: 400px;
+    margin: 0.8rem auto 1.5rem;
+    line-height: 1.6;
+    animation: fade-up 0.8s 0.35s ease-out both;
+  }
 
-    .photo-border {
-        width: clamp(200px, 45vw, 280px);
-        height: clamp(200px, 45vw, 280px);
-        border-radius: 50%;
-        padding: 5px;
-        background: linear-gradient(
-            135deg,
-            var(--blue),
-            var(--green),
-            var(--blue)
-        );
-        box-shadow:
-            0 8px 30px rgba(42, 127, 255, 0.2),
-            0 2px 8px rgba(0, 0, 0, 0.06);
-    }
+  /* Photo frame */
+  .photo-frame {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto 2rem;
+    animation: fade-up 0.8s 0.4s ease-out both;
+  }
 
-    .hero-photo {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        display: block;
-        background: var(--blue-light);
-    }
+  .photo-border {
+    width: clamp(200px, 45vw, 280px);
+    height: clamp(200px, 45vw, 280px);
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(135deg, var(--blue), var(--green), var(--blue));
+    box-shadow:
+      0 8px 30px rgba(42, 127, 255, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.06);
+  }
 
-    .frame-paw {
-        position: absolute;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-    }
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    background: var(--blue-light);
+  }
 
-    .frame-paw-tl {
-        top: 5%;
-        left: -4%;
-        transform: rotate(-25deg);
-    }
+  .frame-paw {
+    position: absolute;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
 
-    .frame-paw-br {
-        bottom: 5%;
-        right: -4%;
-        transform: rotate(20deg);
-    }
+  .frame-paw-tl {
+    top: 5%;
+    left: -4%;
+    transform: rotate(-25deg);
+  }
 
-    .cta-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-family: var(--font-display);
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: white;
-        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-        padding: 0.85rem 2.2rem;
-        border-radius: 50px;
-        text-decoration: none;
-        box-shadow:
-            0 4px 15px rgba(42, 127, 255, 0.3),
-            0 1px 3px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        animation: fade-up 0.8s 0.5s ease-out both;
-    }
+  .frame-paw-br {
+    bottom: 5%;
+    right: -4%;
+    transform: rotate(20deg);
+  }
 
-    .cta-button:hover {
-        transform: translateY(-2px);
-        box-shadow:
-            0 6px 20px rgba(42, 127, 255, 0.4),
-            0 2px 6px rgba(0, 0, 0, 0.1);
-        color: white;
-    }
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    padding: 0.85rem 2.2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow:
+      0 4px 15px rgba(42, 127, 255, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    animation: fade-up 0.8s 0.5s ease-out both;
+  }
 
-    @media (max-width: 600px) {
-        .paw svg {
-            width: 36px;
-        }
-        .frame-paw svg {
-            width: 20px;
-        }
-    }
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 20px rgba(42, 127, 255, 0.4),
+      0 2px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+  }
+
+  @media (max-width: 600px) {
+    .paw svg { width: 36px; }
+    .frame-paw svg { width: 20px; }
+  }
 </style>
