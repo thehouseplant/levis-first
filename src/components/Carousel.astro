@@ -28,7 +28,21 @@ const { images = [
       <div class="carousel-track" id="carousel-track">
         {images.map((img, i) => (
           <div class="carousel-slide" data-index={i}>
-            <img src={img.src} alt={img.alt} loading={i === 0 ? "eager" : "lazy"} />
+            <div class="img-wrapper">
+              <img
+                src={img.src}
+                srcset={`${img.src}?w=400 400w, ${img.src}?w=600 600w, ${img.src}?w=800 800w`}
+                sizes="(max-width: 500px) 92vw, (max-width: 800px) 85vw, 700px"
+                alt={img.alt}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding={i === 0 ? "sync" : "async"}
+                fetchpriority={i === 0 ? "high" : "low"}
+                width="700"
+                height="525"
+                class="carousel-img"
+                onload="this.classList.add('loaded')"
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -78,6 +92,20 @@ const { images = [
       const slide = slides[current] as HTMLElement;
       track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
       dots.forEach((d, i) => d.classList.toggle('active', i === current));
+
+      // Preload adjacent images
+      preloadAdjacent(current);
+    }
+
+    function preloadAdjacent(idx: number) {
+      const neighbors = [idx - 1, idx + 1, idx + 2];
+      neighbors.forEach(n => {
+        const i = ((n % total) + total) % total;
+        const img = slides[i]?.querySelector('img') as HTMLImageElement;
+        if (img && img.loading === 'lazy') {
+          img.loading = 'eager';
+        }
+      });
     }
 
     prevBtn.addEventListener('click', () => goTo(current - 1));
@@ -105,6 +133,7 @@ const { images = [
         if (closest !== current) {
           current = closest;
           dots.forEach((d, i) => d.classList.toggle('active', i === current));
+          preloadAdjacent(current);
         }
       }, 80);
     });
@@ -114,9 +143,22 @@ const { images = [
       if (e.key === 'ArrowLeft') goTo(current - 1);
       if (e.key === 'ArrowRight') goTo(current + 1);
     });
+
+    // Preload slide 2 after initial load
+    preloadAdjacent(0);
   }
 
-  initCarousel();
+  // Use IntersectionObserver to only init carousel when it scrolls into view
+  const section = document.getElementById('photos');
+  if (section) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        initCarousel();
+        observer.disconnect();
+      }
+    }, { rootMargin: '200px' });
+    observer.observe(section);
+  }
 </script>
 
 <style>
@@ -174,17 +216,45 @@ const { images = [
     scroll-snap-align: center;
   }
 
-  .carousel-slide img {
+  /* Image wrapper with placeholder background */
+  .img-wrapper {
+    position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
     border-radius: 16px;
-    display: block;
-    background: var(--blue-light);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--blue-light) 0%, #dbeafe 50%, var(--blue-light) 100%);
+    background-size: 200% 200%;
+    animation: shimmer 1.5s ease-in-out infinite;
     box-shadow:
       0 4px 20px rgba(42, 127, 255, 0.1),
       0 1px 4px rgba(0, 0, 0, 0.04);
     border: 2px solid var(--blue-light);
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 100% 100%; }
+    50% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+  }
+
+  .carousel-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .carousel-img.loaded {
+    opacity: 1;
+  }
+
+  /* Stop shimmer once image loads */
+  .img-wrapper:has(.loaded) {
+    animation: none;
+    background: var(--blue-light);
   }
 
   /* Arrow buttons */
