@@ -1,87 +1,87 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import Carousel from '../components/Carousel.astro';
-import Countdown from '../components/Countdown.astro';
-import Details from '../components/Details.astro';
-import Map from '../components/Map.astro';
-import RsvpLink from '../components/RsvpLink.astro';
-import Footer from '../components/Footer.astro';
-import BluePup from '../components/BluePup.astro';
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import Carousel from "../components/Carousel.astro";
+import Countdown from "../components/Countdown.astro";
+import Details from "../components/Details.astro";
+import Map from "../components/Map.astro";
+import RsvpLink from "../components/RsvpLink.astro";
+import Footer from "../components/Footer.astro";
+import BluePup from "../components/BluePup.astro";
 
 // ─────────────────────────────────────────────
 // ✏️ EDIT THESE VALUES TO CUSTOMIZE YOUR PARTY
 // ─────────────────────────────────────────────
 
 const config = {
-  // Hero
-  childName: "Levi's",
-  tagline: "Come celebrate this amazing milestone with us!",
-  heroImage: "/images/levi-hero.jpg",
+    // Hero
+    childName: "Levi's",
+    tagline: "Come celebrate this amazing milestone with us!",
+    heroImage: "/images/levi-hero.jpg",
 
-  // Carousel — add/remove images here
-  carouselImages: [
-    { src: "/images/carousel-1.jpg", alt: "Levi smiling" },
-    { src: "/images/carousel-2.jpg", alt: "Levi playing" },
-    { src: "/images/carousel-3.jpg", alt: "Levi with family" },
-    { src: "/images/carousel-4.jpg", alt: "Levi's first steps" },
-    { src: "/images/carousel-5.jpg", alt: "Levi laughing" },
-  ],
+    // Carousel — add/remove images here
+    carouselImages: [
+        { src: "/images/carousel-1.jpg", alt: "Levi smiling" },
+        { src: "/images/carousel-2.jpg", alt: "Levi playing" },
+        { src: "/images/carousel-3.jpg", alt: "Levi with family" },
+        { src: "/images/carousel-4.jpg", alt: "Levi's first steps" },
+        { src: "/images/carousel-5.jpg", alt: "Levi laughing" },
+    ],
 
-  // Countdown — set to your party date/time in ISO format
-  partyDate: "2026-04-25T13:00:00",
-  timezone: "America/Los_Angeles",
+    // Countdown — set to your party date/time in ISO format
+    partyDate: "2026-04-25T13:00:00",
+    timezone: "America/Los_Angeles",
 
-  // Details
-  date: "Saturday, April 25, 2026",
-  time: "1:00 PM",
-  venue: "Faylane Park",
-  address: "11700 Seacrest Dr, Garden Grove, CA 92840",
+    // Details
+    date: "Saturday, April 25, 2026",
+    time: "1:00 PM",
+    venue: "Faylane Park",
+    address: "11700 Seacrest Dr, Garden Grove, CA 92840",
 
-  // Wish list — items guests might bring (shown as pill tags)
-  wishListItems = [
-      "Clothing (12-18 months)",
-      "Building blocks",
-      "Kid-friendly puzzles",
-      "Gift cards",
-  ],
-  // Optional: link to a full registry or wish list page
-  // wishListUrl: "https://www.amazon.com/registry/...",
+    // Wish list — items guests might bring (shown as pill tags)
+    wishListItems: [
+        "Clothing (12-18 months)",
+        "Building blocks",
+        "Kid-friendly puzzles",
+        "Gift cards",
+    ],
+    // Optional: link to a full registry or wish list page
+    // wishListUrl: "https://www.amazon.com/registry/...",
 
-  // Map — latitude and longitude of your venue
-  lat: 33.7930715,
-  lng: -117.9542262,
+    // Map — latitude and longitude of your venue
+    lat: 33.7930715,
+    lng: -117.9542262,
 
-  // RSVP — your evite URL
-  eviteUrl: "https://www.evite.com/your-invite-link",
+    // RSVP — your evite URL
+    eviteUrl: "https://www.evite.com/your-invite-link",
 
-  // Footer
-  familyName: "The Family",
+    // Footer
+    familyName: "The Family",
 };
 ---
 
 <Layout title={`${config.childName} 1st Birthday Party`}>
-  <Hero
-    childName={config.childName}
-    tagline={config.tagline}
-    heroImage={config.heroImage}
-  />
-  <Carousel images={config.carouselImages} />
-  <Countdown partyDate={config.partyDate} timezone={config.timezone} />
-  <Details
-    date={config.date}
-    time={config.time}
-    venue={config.venue}
-    address={config.address}
-    wishListItems={config.wishListItems}
-  />
-  <Map
-    lat={config.lat}
-    lng={config.lng}
-    venueName={config.venue}
-    address={config.address}
-  />
-  <RsvpLink eviteUrl={config.eviteUrl} />
-  <Footer familyName={config.familyName} />
-  <BluePup />
+    <Hero
+        childName={config.childName}
+        tagline={config.tagline}
+        heroImage={config.heroImage}
+    />
+    <Carousel images={config.carouselImages} />
+    <Countdown partyDate={config.partyDate} timezone={config.timezone} />
+    <Details
+        date={config.date}
+        time={config.time}
+        venue={config.venue}
+        address={config.address}
+        wishListItems={config.wishListItems}
+    />
+    <Map
+        lat={config.lat}
+        lng={config.lng}
+        venueName={config.venue}
+        address={config.address}
+    />
+    <RsvpLink eviteUrl={config.eviteUrl} />
+    <Footer familyName={config.familyName} />
+    <BluePup />
 </Layout>
